@@ -1,24 +1,5 @@
-import processing.core.*; 
-import processing.data.*; 
-import processing.event.*; 
-import processing.opengl.*; 
-
-import controlP5.*; 
+import controlP5.*;
 import javax.swing.*; 
-
-import java.util.HashMap; 
-import java.util.ArrayList; 
-import java.io.File; 
-import java.io.BufferedReader; 
-import java.io.PrintWriter; 
-import java.io.InputStream; 
-import java.io.OutputStream; 
-import java.io.IOException; 
-
-public class Clump_Calculator_1_4 extends PApplet {
-
-
- 
 
 int[] pX =  new int [0];
 int[] pY =  new int [0];
@@ -52,16 +33,16 @@ String outputPath = "";
 float imgScale;
 int rSizeX;
 int rSizeY;
-
+String scales[];
+  
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-public void setup() {
+void setup() {
   // size(displayWidth, displayHeight);
-  
+  fullScreen();
   background(200);
   textAlign(CENTER, CENTER);
-  
- 
+  scales = loadStrings("data/scales.txt");
   cp5 = new ControlP5(this);
   
   // Javax.swing custom function
@@ -89,7 +70,7 @@ public void setup() {
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-public void draw() {
+void draw() {
   background(200);
   image(platePhoto, 0, 0);
   
@@ -104,7 +85,7 @@ public void draw() {
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-public void mousePoint() {
+void mousePoint() {
   if (keyPressed && key == 'd' && kBounce == 0 && pX.length != 0) {
     pX = shorten(pX);
     pY = shorten(pY);
@@ -134,16 +115,16 @@ public void mousePoint() {
   }
   numPoints = pX.length;
   if (txtBG == 1) {
-    fill(0xff0B6DD3, 150);
+    fill(#0B6DD3, 150);
     strokeWeight(3);
-    stroke(0xff003F81, 175);
+    stroke(#003F81, 175);
     rect((width/2)-20, 230 , 140 , 110);
   }
 }
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-public void menuDraw() {
+void menuDraw() {
   fill(150, 150, 180, 200);
   strokeWeight(2);
   stroke(140, 140, 180, 240);
@@ -159,16 +140,16 @@ public void menuDraw() {
   textSize(14);
   noStroke();
   fill(50);
-  text("Save Data to .txt File", 75, 8.5f);
-  text("Clear All Points", 225, 8.5f);
-  text("Open New Image", 375, 8.5f);
-  text("Set Max Distance", 525, 8.5f);
-  text("Close Program", 675, 8.5f);
-  text("Load File", 825, 8.5f);
-  text("Save File", 975, 8.5f);
+  text("Save Data to .txt File", 75, 8.5);
+  text("Clear All Points", 225, 8.5);
+  text("Open New Image", 375, 8.5);
+  text("Set Max Distance", 525, 8.5);
+  text("Close Program", 675, 8.5);
+  text("Load File", 825, 8.5);
+  text("Save File", 975, 8.5);
   String mL = "Max Length: ";
   mL += MaxLength;
-  text(mL, 1125, 8.5f);
+  text(mL, 1125, 8.5);
   
   if (mouseX > 0 && mouseX < 150 && mouseY > 0 && mouseY < 20 && mousePressed && mBounce == 0) {
     clumpCalc();
@@ -270,7 +251,7 @@ public void menuDraw() {
   takeLine();
 }
 
-public void takeLine() {
+void takeLine() {
   if (mousePressed && lineBounce == 0) {
     lStartx = mouseX;
     lStarty = mouseY;
@@ -304,9 +285,13 @@ public void takeLine() {
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-public void clumpCalc() {
+void clumpCalc() {
   
-  float[] mLengths = {0.25f, 0.175f, 0.125f, 0.0625f, 0.025f};
+  float[] mLengths = new float[scales.length];
+  
+  for (int z = 0; z < scales.length; z++) {
+    mLengths[z] = float(scales[z]);
+  }
   
   JFrame parentFrame = new JFrame();
  
@@ -367,15 +352,5 @@ public void clumpCalc() {
     println(oPath);
     println(outputPath);
     saveStrings(oPath, arrayOut);
-  }
-}
-  public void settings() {  fullScreen(); }
-  static public void main(String[] passedArgs) {
-    String[] appletArgs = new String[] { "--present", "--window-color=#666666", "--stop-color=#cccccc", "Clump_Calculator_1_4" };
-    if (passedArgs != null) {
-      PApplet.main(concat(appletArgs, passedArgs));
-    } else {
-      PApplet.main(appletArgs);
-    }
   }
 }
