@@ -28,7 +28,7 @@ int lStartx, lStarty, lEndx, lEndy;
 float lLength;
 
 PImage platePhoto;
-String photoPath = "plate.jpg";
+String photoPath = "data/plate.jpg";
 String outputPath = "";
 float imgScale;
 int rSizeX;
